@@ -1,6 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\VNPAYController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +19,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'api'], function () {
+    Route::prefix('/transactions')->group(function () {
+//        Route::get("/", [TransactionController::class, "getTransactions"]);
+        Route::get("/by-payment-code", [TransactionController::class, "getTransactionByPaymentCode"]);
+        Route::get("/by-order", [TransactionController::class, "getTransactionByOrder"]);
+
+        Route::post("/", [TransactionController::class, "processPayment"]);
+        Route::post("/refund", [TransactionController::class, "refund"]);
+        Route::post("/post", [TransactionController::class, "post"]);
+
+        Route::put("/{transaction}/status", [TransactionController::class, "changeStatus"]);
+    });
+
+    Route::group(["prefix" => "vnpay"], function () {
+        Route::get('/return', [VNPAYController::class, 'return']);
+        Route::get('/ipn', [VNPAYController::class, 'ipn']);
+    });
+
+    Route::prefix('/admin')->group(function () {
+        Route::prefix("/transactions")->group(function () {
+            Route::get("/", [TransactionController::class, "getTransactions"]);
+            Route::get("/statistic", [TransactionController::class, "statistic"]);
+            Route::get("/statistic-by-month", [TransactionController::class, "statisticByMonth"]);
+            Route::get("/statistic-pay-and-refund", [TransactionController::class, "statisticPayAndRefund"]);
+            Route::get("/payment-method", [PaymentTypeController::class, "getPaymentTypeList"]);
+            Route::put("/payment-change-status", [PaymentTypeController::class, "setPaymentStatus"]);
+        });
+    });
 });

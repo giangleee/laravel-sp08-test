@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\VNPAYController;
 use Illuminate\Support\Facades\Route;
 
 /*
