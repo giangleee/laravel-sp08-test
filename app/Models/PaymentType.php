@@ -12,4 +12,10 @@ class PaymentType extends Model
     protected $table = 'payment_types';
 
     protected $fillable = ['payment_type', 'status'];
+
+    public static $STATUS_ON = 1;
+
+    public static $STATUS_OFF = 0;
+
+
 }
