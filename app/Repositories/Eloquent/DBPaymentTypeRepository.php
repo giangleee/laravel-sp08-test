@@ -21,11 +21,11 @@ class DBPaymentTypeRepository extends BaseRepository implements PaymentTypeRepos
     public function updateStatus($method)
     {
         $this->model->whereIn("payment_type", $method)->update([
-            'status' => PaymentType::$STATUS_OFF
+            'status' => PaymentType::$STATUS_ON
         ]);
 
         $this->model->whereNotIn("payment_type", $method)->update([
-            'status' => PaymentType::$STATUS_ON
+            'status' => PaymentType::$STATUS_OFF
         ]);
 
         return $this->model->all();
