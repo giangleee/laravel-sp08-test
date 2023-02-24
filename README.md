@@ -1,35 +1,78 @@
----
-title: Laravel
-description: A Laravel app that connects to a PostgreSQL database
-tags:
-  - php
-  - laravel
-  - postgresql
----
+# Structured-Programming_SP-08
 
-# Laravel Starter Example
+# Quick Start
+>
+> Version 1.2 for round 2
+>
 
-This is a [Laravel](https://laravel.com/) starter app that connects to a Railway Postgres database.
+## To run this project locally
 
-[![Deploy on Railway Test](https://railway.app/button.svg)](https://railway.app/new/template/fWEWWf)
+### Prerequisites
+1. Make sure you've installed [docker]
+2. You must run commands in Linux or Powershell environment on Windows
 
-## ✨ Features
+### ATM card information
+```
+Ngân hàng: NCB
+Số thẻ: 9704198526191432198
+Tên chủ thẻ:NGUYEN VAN A
+Ngày phát hành:07/15
+Mật khẩu OTP:123456
+```
 
-- PHP
-- Laravel
-- Postgres
+### Copy .env of app
+```
+$ cp .env.example .env
+```
 
-## 💁‍♀️ How to use
+### Config DB in .env
+```
+APP_URL=https://localhost/
+...
+DB_CONNECTION=mysql
+DB_HOST=sp-db
+DB_PORT=3306
+DB_DATABASE=sp_database
+DB_USERNAME=root
+DB_PASSWORD=123456
+```
 
-- [Create a Railway project with the Postgres plugin](https://railway.app/project?plugins=postgresql)
-- Connect to your Railway project with `railway link`
+### Build docker container
+>
+> After Docker runs, the process takes about 5p to complete the processes. 
+> You can watch your process in server's log terminal by click View details at sp08-server.
+>
 
-## 📝 Notes
+```
+$ docker-compose up -d --build
+```
 
-- **Dockerfile**: The `Dockerfile` and associated files in `docker/` are based on [Laravel Sail PHP 8.0](https://github.com/laravel/sail/tree/1.x/runtimes/8.0)
-- **Plugin Config**: To connect to a Railway Plugin, Postgres for example, you will need to utilize the environment variables listed for that plugin in the [Railway Docs](https://docs.railway.app/).
-  See the `.env.example` for an example of using these with Postgres.
-- **Web server port**: Railway dynamically assigns a port for your webserver. We grab the `$PORT` environment variable in `docker/start-container` to set this on Artisan `serve`
-- **Logging**: Because the disk on Railway containers is ephemeral, we pipe the logs normally output to `storage/logs/laravel.log` to `stdout` [as seen here](https://github.com/sorrell/railavel/commit/2802b8c5032a13a601a903276ee2181678009f67)
-- **APP_KEY**: This starter will automatically generate the `APP_KEY` (`php artisan key:generate` in the `docker/start-container`)
-- **Migrations**: This starter automatically runs migrations on deploy (in the `docker/start-container`)
+### Migrate and seed data
+```
+$ docker-compose exec sp08-server ash
+
+[/var/www/html]
+
+$ php artisan storage:link
+
+$ php artisan key:generate
+
+$ php artisan migrate
+
+$ php artisan db:seed
+
+```
+
+Go ahead and play with the app and the code. As you make code changes, the app will automatically reload.
+
+[react]: https://reactjs.org/
+[create-near-app]: https://github.com/near/create-near-app
+[node.js]: https://nodejs.org/en/download/package-manager/
+[jest]: https://jestjs.io/
+[near accounts]: https://docs.near.org/docs/concepts/account
+[near wallet]: https://wallet.testnet.near.org/
+[near-cli]: https://github.com/near/near-cli
+[gh-pages]: https://github.com/tschaub/gh-pages
+[php]: https://www.php.net/downloads.php
+[postgresql lts version]: https://www.postgresql.org/download/
+[docker]: https://www.docker.com/
